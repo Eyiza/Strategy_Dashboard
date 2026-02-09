@@ -29,6 +29,11 @@ pip install -r requirements.txt
 ```bash
 pip freeze > requirements.txt
 ```
+5. Allow Playwright to install the necessary browsers:
+```bash
+playwright install
+playwright install-deps
+```
 
 ### Usage
 1. Run the Flask application:
