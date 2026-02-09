@@ -1,0 +1,15 @@
+.icon-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.tool-card {
+    transition: transform 0.2s;
+    border: none;
+}
+.tool-card:hover {
+    transform: translateY(-5px);
+}
