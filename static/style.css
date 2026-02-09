@@ -13,3 +13,9 @@
 .tool-card:hover {
     transform: translateY(-5px);
 }
+
+.border-top-success { border-top: 4px solid #198754; }
+.border-top-warning { border-top: 4px solid #ffc107; }
+.border-top-primary { border-top: 4px solid #0d6efd; }
+.border-top-danger  { border-top: 4px solid #dc3545; }
+.border-start-secondary { border-left: 4px solid #6c757d; }

@@ -5,67 +5,101 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .category-header { font-weight: bold; margin-bottom: 20px; text-transform: uppercase; color: #555; font-size: 0.9rem; letter-spacing: 1px; }
+    </style>
 </head>
 <body class="bg-light">
 
 <div class="container py-5">
-    <h1 class="text-center mb-5 display-4 fw-bold text-primary">Strategy Tools Suite</h1>
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-dark">Strategy Hub</h1>
+        <p class="text-muted">Centralized Data Processing Tools</p>
+    </div>
     
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row g-4">
         
-        <div class="col">
-            <div class="card h-100 shadow-sm tool-card">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-primary text-white mb-3">
-                        <i class="fas fa-bolt fa-2x"></i>
+        <div class="col-md-3">
+            <div class="category-header text-success"><i class="fas fa-plane me-2"></i> Flight Data</div>
+            <div class="card h-100 shadow-sm tool-card border-top-success">
+                <div class="card-body">
+                    <h5 class="card-title">Flight Reports</h5>
+                    <p class="card-text text-muted small">Process daily logs into reports.</p>
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="/flight_data" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-invoice me-1"></i> Monthly Report
+                        </a>
+                        <a href="/weekly_flight_data" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-chart-line me-1"></i> Weekly Summary
+                        </a>
                     </div>
-                    <h3 class="card-title">Grid Harvester</h3>
-                    <p class="card-text text-muted">Scrape daily generation data from NIGGRID and generate monthly matrices.</p>
-                    <a href="/niggrid" class="btn btn-outline-primary stretched-link">Launch Tool</a>
                 </div>
             </div>
         </div>
 
-        <div class="col">
-            <div class="card h-100 shadow-sm tool-card">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-success text-white mb-3">
-                        <i class="fas fa-gas-pump fa-2x"></i>
+        <div class="col-md-3">
+            <div class="category-header text-warning"><i class="fas fa-ship me-2"></i> Cargo Data</div>
+            <div class="card h-100 shadow-sm tool-card border-top-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Manifest Cleaner</h5>
+                    <p class="card-text text-muted small">Convert PDF manifests to Excel.</p>
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="/cargo_manifest" class="btn btn-outline-warning btn-sm text-dark">
+                            <i class="fas fa-file-pdf me-1"></i> Process PDFs
+                        </a>
                     </div>
-                    <h3 class="card-title">Gas Pricing</h3>
-                    <p class="card-text text-muted">Future tool for gas market analysis.</p>
-                    <a href="#" class="btn btn-outline-secondary disabled">Coming Soon</a>
                 </div>
             </div>
         </div>
 
-        <div class="col">
-            <div class="card h-100 shadow-sm tool-card">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-success text-white mb-3">
-                        <i class="fas fa-plane fa-2x"></i>
+        <div class="col-md-3">
+            <div class="category-header text-primary"><i class="fas fa-water me-2"></i> Shipping Data</div>
+            <div class="card h-100 shadow-sm tool-card border-top-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Vessel Tracking</h5>
+                    <p class="card-text text-muted small">Analyze vessel movements.</p>
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-outline-primary btn-sm disabled">Coming Soon</button>
                     </div>
-                    <h3 class="card-title">Flight Processor</h3>
-                    <p class="card-text text-muted">Merge daily flight logs, map cities to states, and standardize airport names.</p>
-                    <a href="/flight_data" class="btn btn-outline-success stretched-link">Launch Tool</a>
                 </div>
             </div>
         </div>
 
-        <div class="col">
-            <div class="card h-100 shadow-sm tool-card">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-warning text-dark mb-3">
-                        <i class="fas fa-ship fa-2x"></i>
+        <div class="col-md-3">
+            <div class="category-header text-danger"><i class="fas fa-boxes me-2"></i> Inventory Data</div>
+            <div class="card h-100 shadow-sm tool-card border-top-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Logistics</h5>
+                    <p class="card-text text-muted small">Track stock and movement.</p>
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-outline-danger btn-sm disabled">
+                            <i class="fas fa-truck me-1"></i> Trucking
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm disabled">
+                            <i class="fas fa-exclamation-triangle me-1"></i> Stockout
+                        </button>
                     </div>
-                    <h3 class="card-title">Cargo Cleaner</h3>
-                    <p class="card-text text-muted">Convert PDF Cargo Manifests into clean Excel tables. Merges multiple PDFs into one Master file.</p>
-                    <a href="/cargo_manifest" class="btn btn-outline-warning stretched-link">Launch Tool</a>
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="category-header text-secondary"><i class="fas fa-bolt me-2"></i> Power Generation</div>
+            <div class="card shadow-sm border-start-secondary">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">NIGGRID Harvester</h5>
+                        <small class="text-muted">Daily power generation scraper and matrix generator.</small>
+                    </div>
+                    <a href="/niggrid" class="btn btn-secondary">Launch Tool</a>
+                </div>
+            </div>
         </div>
+    </div>
+
 </div>
 
 </body>
