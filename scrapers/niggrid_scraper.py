@@ -5,8 +5,9 @@ from datetime import datetime, timedelta
 import os
 
 # --- MASTER LIST (ORDER IS CRITICAL) ---
-# 1. Used for Matching (Specific names first to avoid partial match errors)
-# 2. Used for Reporting (Rows will appear in this exact order)
+# Used for:
+# 1. Matching (Specific names first to avoid partial match errors)
+# 2. Reporting (These rows appear FIRST in this exact order)
 GENCO_MASTER_LIST = [
     "AFAM III FAST POWER", "AFAM VI (GAS/STEAM)", "AZURA-EDO IPP (GAS)", 
     "DADINKOWA G.S (HYDRO)", "DELTA (GAS)", "EGBIN (STEAM)", 
@@ -31,12 +32,13 @@ def standardize_name(raw_name):
     if not isinstance(raw_name, str): return str(raw_name)
     clean_raw = raw_name.lower().strip()
     
-    # Loop through the list in the specific order defined above
+    # 1. Try to find in Master List
     for master_name in GENCO_MASTER_LIST:
         clean_master_key = master_name.lower().split('(')[0].strip()
         if clean_master_key in clean_raw:
             return master_name.title() # Return Title Case
             
+    # 2. If NO match found (New Station!), return it Title Cased
     return raw_name.title()
 
 def get_date_range(start_str, end_str):
@@ -54,7 +56,6 @@ async def run_scraper(start_date, end_date, download_folder):
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        # Use a large viewport to ensure tables render fully
         context = await browser.new_context(viewport={'width': 1920, 'height': 1080})
         page = await context.new_page()
         
@@ -87,10 +88,9 @@ async def run_scraper(start_date, end_date, download_folder):
                 dfs = pd.read_html(html)
                 if dfs:
                     df = max(dfs, key=len).copy()
-                    # Col 1 is usually the Name
                     df.rename(columns={df.columns[1]: 'Raw_Name'}, inplace=True)
                     
-                    # Clean & Tag
+                    # Clean & Tag (New stations get Title Cased here)
                     df['Station_Name'] = df['Raw_Name'].apply(standardize_name)
                     df['Date_Short'] = short_date
                     
@@ -111,7 +111,7 @@ async def run_scraper(start_date, end_date, download_folder):
         for col in hour_cols:
             full_df[col] = pd.to_numeric(full_df[col], errors='coerce').fillna(0)
 
-        # Calculate Daily Total for Matrix
+        # Calculate Daily Total
         full_df['Daily_Total'] = full_df[hour_cols].sum(axis=1)
 
         # Pivot Matrix
@@ -122,9 +122,23 @@ async def run_scraper(start_date, end_date, download_folder):
             aggfunc='sum'
         )
 
-        # CRITICAL: Reindex using Master List to ensure ORDER and include BLANKS
-        master_index_ordered = [x.title() for x in GENCO_MASTER_LIST]
-        pivot = pivot.reindex(master_index_ordered, fill_value=0)
+        # --- HYBRID SORTING LOGIC ---
+        # 1. Get List of "Known" Stations (from Master List)
+        known_stations = [x.title() for x in GENCO_MASTER_LIST]
+        
+        # 2. Get List of "New" Stations (Present in data but NOT in Master List)
+        # We look at the pivot table's index to find what we actually scraped
+        captured_stations = pivot.index.tolist()
+        new_stations = [s for s in captured_stations if s not in known_stations]
+        
+        # 3. Sort "New" Stations Alphabetically
+        new_stations.sort()
+        
+        # 4. Combine: Known First + New Alphabetical Second
+        final_order = known_stations + new_stations
+        
+        # 5. Reindex (This forces the order AND includes 0-value rows for known stations)
+        pivot = pivot.reindex(final_order, fill_value=0)
 
         # Add Totals
         pivot['MONTHLY_TOTAL'] = pivot.sum(axis=1)

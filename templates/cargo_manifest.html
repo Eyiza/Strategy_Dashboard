@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cargo Manifest Cleaner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <a href="/" class="text-decoration-none text-muted mb-4 d-inline-block">&larr; Back to Dashboard</a>
+    
+    <div class="card shadow-lg mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-dark p-4">
+            <h2 class="mb-0"><i class="fas fa-ship me-2"></i> Cargo Manifest Cleaner</h2>
+        </div>
+        
+        <div class="card-body p-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="alert alert-info">
+                <strong>Logic:</strong> This tool extracts tables from Cargo PDFs, removes Foreign Jetties (e.g., Togo, Ghana), maps Jetties to States (Lagos, Rivers, etc.), and fixes date formats.
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Upload Cargo Manifest PDFs</label>
+                    <input type="file" name="files" class="form-control" multiple required accept=".pdf">
+                    <div class="form-text">Select multiple PDF files to process and merge.</div>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-warning btn-lg" id="runBtn">
+                        Process & Download ZIP
+                    </button>
+                </div>
+            </form>
+
+            <div id="loading" class="text-center mt-4 d-none">
+                <div class="spinner-border text-warning" role="status"></div>
+                <p class="mt-2 text-muted">Parsing PDFs... This can take a while for large files.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showLoading() {
+        document.getElementById('loading').classList.remove('d-none');
+        document.getElementById('runBtn').classList.add('disabled');
+        document.getElementById('runBtn').innerText = 'Processing...';
+    }
+</script>
+
+</body>
+</html>
