@@ -40,6 +40,10 @@ playwright install-deps
 ```bash
 python app.py
 ```
+Or, if in production mode:
+```bash
+gunicorn app:app
+```
 2. Open your web browser and navigate to `http://127.0.0.1:5000/`.
 3. Click the "Run Scraper" button to start the scraper.
 4. After the scraper finishes, click the "Download CSV" button to download the results.
