@@ -37,15 +37,23 @@
                 
                 <div class="d-grid">
                     <button type="submit" class="btn btn-warning btn-lg" id="runBtn">
-                        Process & Download ZIP
+                        Process
                     </button>
-                </div>
+                </div> 
             </form>
 
+            {% if session.get('latest_cargo_file') %}
+                <div class="d-grid">
+                    <a href="{{ url_for('download_cargo') }}" class="btn btn-warning btn-lg mt-3">
+                        Download Processed ZIP
+                    </a>
+                </div>
+            {% endif %}
+
             <div id="loading" class="text-center mt-4 d-none">
-                <div class="spinner-border text-warning" role="status"></div>
+                <div class="spinner-border text-success" role="status"></div>
                 <p class="mt-2 text-muted">Parsing PDFs... This can take a while for large files.</p>
-            </div>
+            </div>            
         </div>
     </div>
 </div>

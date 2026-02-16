@@ -24,8 +24,8 @@
                 {% endif %}
             {% endwith %}
 
+            <!-- <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()"> -->
             <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
-                
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Target Month</label>
@@ -64,10 +64,19 @@
                 </div>
             </form>
 
+            {% if session.get('latest_flight_file') %}
+                <div class="d-grid">
+                    <a href="{{ url_for('download_flight') }}" class="btn btn-success btn-lg mt-3">
+                        Download Processed File
+                    </a>
+                </div>
+            {% endif %}
+
             <div id="loading" class="text-center mt-4 d-none">
                 <div class="spinner-border text-success" role="status"></div>
                 <p class="mt-2 text-muted">Merging and cleaning data...</p>
             </div>
+
         </div>
     </div>
 </div>
