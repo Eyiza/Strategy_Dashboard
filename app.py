@@ -29,6 +29,7 @@ def niggrid_tool():
         try:
             # Run the async scraper from sync Flask code
             filename = asyncio.run(run_scraper(start_date, end_date, DOWNLOAD_FOLDER))
+            # filename = run_scraper(start_date, end_date, DOWNLOAD_FOLDER)
             
             if filename:
                 return send_file(os.path.join(DOWNLOAD_FOLDER, filename), as_attachment=True)
